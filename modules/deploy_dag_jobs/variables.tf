@@ -13,3 +13,7 @@ variable "root-terraform-composer-cluster-resource-identifier" {
 variable "root_depends_on_composer_cluster" {
   type = any
 }
+
+
+variable "root-terraform-project-home-folder" {
+}

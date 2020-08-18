@@ -120,7 +120,8 @@ resource "google_storage_bucket_object" "upload-scala-jar" {     //used
   //bucket = trimsuffix(trimprefix("gs://us-central1-terraform-compo-f7bb6d6c-bucket/dags","gs://"),"/dags")
   content_type = "application/java-archive"
   provisioner "local-exec" {
-    command = "gsutil cp -r /Users/chenqingmin/Codes/terraform_test_project_temp/sparkSQL-BQ-GS-1.0-SNAPSHOT-jar-with-dependencies.jar ${var.root-scala-code-jar-bucket}/codes"
+    //command = "gsutil cp -r /Users/chenqingmin/Codes/terraform_test_project_temp/sparkSQL-BQ-GS-1.0-SNAPSHOT-jar-with-dependencies.jar ${var.root-scala-code-jar-bucket}/codes"    //used
+    command = "gsutil cp -r ${var.root-terraform-project-home-folder}/sparkSQL-BQ-GS-1.0-SNAPSHOT-jar-with-dependencies.jar ${var.root-scala-code-jar-bucket}/codes"
   }
   //depends_on = [google_storage_bucket_iam_member.grant_user_admin_bucket,google_storage_bucket_iam_member.grant_user_objectAdmin_bucket]
   depends_on = [google_storage_bucket_object.upload-dataproc-init-script]
@@ -133,7 +134,8 @@ resource "google_storage_bucket_object" "upload-json-file" {     //used
   bucket = trimprefix("${var.root-scala-code-jar-bucket}","gs://")
   content_type = "application/json"
   provisioner "local-exec" {
-    command = "gsutil cp -r /Users/chenqingmin/Codes/terraform_test_project_temp/AllServicesKey.json ${var.root-scala-code-jar-bucket}/security"
+    //command = "gsutil cp -r /Users/chenqingmin/Codes/terraform_test_project_temp/AllServicesKey.json ${var.root-scala-code-jar-bucket}/security"        //used
+    command = "gsutil cp -r ${var.root-terraform-project-home-folder}/AllServicesKey.json ${var.root-scala-code-jar-bucket}/security"
   }
   depends_on = [null_resource.auth_gcloud]
 }
@@ -144,7 +146,8 @@ resource "google_storage_bucket_object" "upload-dataproc-init-script" {     //us
   bucket = trimprefix("${var.root-scala-code-jar-bucket}","gs://")
   content_type = "text/x-sh"
   provisioner "local-exec" {
-    command = "gsutil cp -r /Users/chenqingmin/Codes/terraform_test_project_temp/dataproc_init.sh ${var.root-scala-code-jar-bucket}/configs"
+    //command = "gsutil cp -r /Users/chenqingmin/Codes/terraform_test_project_temp/dataproc_init.sh ${var.root-scala-code-jar-bucket}/configs"    //used
+    command = "gsutil cp -r ${var.root-terraform-project-home-folder}/dataproc_init.sh ${var.root-scala-code-jar-bucket}/configs"
   }
   depends_on = [google_storage_bucket_object.upload-json-file]
 }
@@ -189,8 +192,9 @@ resource "google_storage_bucket_object" "upload-dataproc-init-script" {     //us
 
 resource "null_resource" "auth_gcloud" {   //no used
   provisioner "local-exec" {
-    command = "gcloud auth activate-service-account 742690957765-compute@developer.gserviceaccount.com --key-file=/Users/chenqingmin/Codes/terraform_test_project_temp/dataprod-cluster-testing-1-7444c4c90649.json --project=dataprod-cluster-testing-1" //it worked
+    //command = "gcloud auth activate-service-account 742690957765-compute@developer.gserviceaccount.com --key-file=/Users/chenqingmin/Codes/terraform_test_project_temp/dataprod-cluster-testing-1-7444c4c90649.json --project=dataprod-cluster-testing-1" //it worked and be used
     //command = "gcloud config set core/account testinggcpuser@gmail.com"
+    command = "gcloud auth activate-service-account 742690957765-compute@developer.gserviceaccount.com --key-file=${var.root-terraform-project-home-folder}/dataprod-cluster-testing-1-7444c4c90649.json --project=dataprod-cluster-testing-1"
   }
   depends_on = [google_storage_bucket.create-source-code-bucket]   // used
 }

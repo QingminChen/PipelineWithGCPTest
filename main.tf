@@ -25,6 +25,8 @@ module "deploy_dag_jobs" {
   root-terraform-composer-cluster-airflow-uri = "${module.create_composer_cluster.terraform-composer-cluster-airflow-uri}"  //used
   root-terraform-composer-cluster-resource-identifier = "${module.create_composer_cluster.terraform-composer-cluster-resource-identifier}"  //used
   root_depends_on_composer_cluster = [module.create_composer_cluster.composer_cluster_complete]
+
+  root-terraform-project-home-folder = "${var.azure-pipeline-input-terraform-project-home-folder}"
 }
 
 //module "gcloud" {
@@ -41,7 +43,7 @@ module "deploy_dag_jobs" {
 module "dataproc_prequisition" {
   source = "./modules/dataproc_prequisition"
 
-
+  root-terraform-project-home-folder = "${var.azure-pipeline-input-terraform-project-home-folder}"
 
 //  root-terraform-composer-cluster-bucket = "${module.create_composer_cluster.terraform-composer-cluster-bucket}"    //used
 //  root-terraform-composer-cluster-name = "${module.create_composer_cluster.terraform-composer-cluster-name}"        //used

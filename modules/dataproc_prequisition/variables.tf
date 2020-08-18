@@ -36,3 +36,6 @@ variable "root-scala-code-jar-bucket" { //used
 //variable "root_composer_cluster_depends_on" {    //used
 //  type = any
 //}
+
+variable "root-terraform-project-home-folder" {
+}
